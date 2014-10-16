@@ -19,4 +19,5 @@ ltmain.sh
 missing
 stamp-*
 gstrpicamsrc-*.tar.*
+compile
 *~
