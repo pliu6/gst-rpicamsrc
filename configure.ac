@@ -1,7 +1,7 @@
 dnl required version of autoconf
 AC_PREREQ([2.53])
 
-AC_INIT([gstrpicamsrc],[1.0.0])
+AC_INIT([gst-rpicamsrc],[1.0.0])
 
 dnl required versions of gstreamer and plugins-base
 GST_REQUIRED=1.0.0
@@ -35,22 +35,13 @@ AC_CHECK_PROG(HAVE_PKGCONFIG, pkg-config, [ ], [
 ])
 AC_PATH_PROG(GLIB_MKENUMS, glib-mkenums)
 
-dnl Ensure we have basic Raspberry Pi headers and libs
-dnl we need.
-oldCFLAGS="$CPPFLAGS"
-RPI_INCLUDEPATH="-I/opt/vc/include -I/opt/vc/include/interface/vcos/pthreads -I/opt/vc/include/interface/vmcs_host/linux"
-CPPFLAGS="$CPPFLAGS $RPI_INCLUDEPATH"
-AC_CHECK_HEADER([bcm_host.h], [], [AC_MSG_ERROR([Raspberry Pi files not found in /opt/vc])])
-AC_SUBST(RPI_INCLUDEPATH)
-CPPFLAGS="$oldCPPFLAGS"
-
-oldLDFLAGS="$LDFLAGS"
-RPI_LIBFLAGS="-L/opt/vc/lib"
-LDFLAGS="$LDFLAGS $RPI_LIBFLAGS"
-AC_CHECK_LIB([bcm_host], [bcm_host_init], [], [AC_MSG_ERROR([Raspberry Pi files not found in /opt/vc])])
-AC_SUBST(RPI_LIBFLAGS)
-LDFLAGS="$oldLDFLAGS"
-
+PKG_CHECK_MODULES([bcm_host],
+                  [bcm_host],
+                  [
+                   AC_SUBST(bcm_host_CFLAGS)
+                   AC_SUBST(bcm_host_LIBS)
+                  ],
+                  [AC_MSG_ERROR([You need to install rpi_userland package on your system.])])
 
 dnl gstreamer-plugins-bad-1.0 >= GSTPB_BAD_REQUIRED
 PKG_CHECK_MODULES(GST, [

@@ -10,8 +10,8 @@ libgstrpicamsrc_la_SOURCES = \
    RaspiCapture.h RaspiCamControl.h RaspiPreview.h
 
 # Need -DGST_USE_UNSTABLE_API for GstBaseCameraSrc
-libgstrpicamsrc_la_CFLAGS = $(GST_CFLAGS) $(RPI_INCLUDEPATH) -I$(top_srcdir)
-libgstrpicamsrc_la_LIBADD = $(GST_LIBS) $(RPI_LIBFLAGS) -lmmal_core -lmmal_util -lmmal_vc_client -lvcos -lbcm_host
+libgstrpicamsrc_la_CFLAGS = $(GST_CFLAGS) $(bcm_host_CFLAGS) -I$(top_srcdir)
+libgstrpicamsrc_la_LIBADD = $(GST_LIBS) $(bcm_host_LIBS) -lmmal_core -lmmal_util -lmmal_vc_client -lvcos -lbcm_host
 libgstrpicamsrc_la_LDFLAGS = $(GST_PLUGIN_LDFLAGS)
 libgstrpicamsrc_la_LIBTOOLFLAGS = --tag=disable-static
 
